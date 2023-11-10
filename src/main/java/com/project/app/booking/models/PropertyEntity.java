@@ -1,47 +1,57 @@
 package com.project.app.booking.models;
 
+
+import com.project.app.booking.enums.Type;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name="users",uniqueConstraints = {
-        @UniqueConstraint(
-                name = "user_email_unique",
-                columnNames = "email"
-        )
-})
-public class UserEntity {
+@Table(name="property")
+public class PropertyEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column( nullable = false)
-    private String username;
+    @Column
+    String title;
 
-    @Column( nullable = false)
-    private String fname;
+    @Column
+    String description;
 
-    @Column( nullable = false)
-    private String lname;
+    @Column
+    Float price;
 
-    @Column( nullable = false)
-    private String email;
+    @Column
+    String location;
 
-    @Column( nullable = false)
-    private String password;
+    @Column
+    String area;
 
-    @OneToMany
-    private Set<ListingEntity> listings;
+    @Column
+    int bedrooms;
+
+    @Column
+    int bathrooms;
+
+    @Column
+    String img;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    Type type;
+
+    @OneToOne(mappedBy = "listing")
+    private ListingEntity listing;
 
     @OneToMany
     private Set<BookingEntity> bookings;
@@ -50,7 +60,7 @@ public class UserEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UserEntity that = (UserEntity) o;
+        PropertyEntity that = (PropertyEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 
@@ -58,4 +68,8 @@ public class UserEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+
+
+
 }

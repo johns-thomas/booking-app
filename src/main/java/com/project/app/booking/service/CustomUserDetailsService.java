@@ -20,6 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -35,10 +36,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(userEntity.getUsername(),userEntity.getPassword(), Arrays.asList( new SimpleGrantedAuthority("User")));
     }
 
+    public UserEntity getByUsername(String username){
+        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("No user found"));
+    }
     public UserEntity createUser(RegisterDTO regDto) throws Exception{
 
         if(userRepository.existsByUsername(regDto.getUsername())){
             throw new Exception("User exists!");
+        }
+
+        if (userRepository.existsByEmail(regDto.getEmail())) {
+            throw new RuntimeException(
+                    "email already taken"
+            );
         }
         UserEntity userEntity=new UserEntity();
         userEntity.setUsername(regDto.getUsername());
