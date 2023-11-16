@@ -14,7 +14,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
 @Table(name="property")
 public class PropertyEntity {
@@ -47,10 +46,10 @@ public class PropertyEntity {
     String img;
 
     @Column
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     Type type;
 
-    @OneToOne(mappedBy = "listing")
+    @OneToOne(mappedBy = "property")
     private ListingEntity listing;
 
     @OneToMany

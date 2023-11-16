@@ -32,10 +32,10 @@ public class ListingsController {
 
 
     @PostMapping(value="create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void createListing(@AuthenticationPrincipal UserDetails user, @RequestPart("json") FormDTO formData,
+    public void createListing(@AuthenticationPrincipal UserDetails user, @RequestParam("json") String json,
                               @RequestParam("file") MultipartFile file) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        ListingDTO listing=mapper.readValue(formData.getJson(), ListingDTO.class);
+        ListingDTO listing=mapper.readValue(json, ListingDTO.class);
         long propertyId=propertyService.createProperty(listing.getProperty());
         listing.getProperty().setId(propertyId);
         propertyService.uploadPropertyImage(propertyId,file);

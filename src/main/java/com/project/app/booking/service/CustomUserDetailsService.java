@@ -23,10 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+//    @Autowired
+//    public CustomUserDetailsService(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
     //CustomUserDetailsService()
     @Override
@@ -52,6 +52,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         UserEntity userEntity=new UserEntity();
         userEntity.setUsername(regDto.getUsername());
+        userEntity.setEmail(regDto.getEmail());
         userEntity.setPassword(passwordEncoder.encode(regDto.getPassword()));
         userEntity.setFname(regDto.getFname());
         userEntity.setLname(regDto.getLname());

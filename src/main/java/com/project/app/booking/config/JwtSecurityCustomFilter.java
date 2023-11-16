@@ -32,7 +32,7 @@ public class JwtSecurityCustomFilter extends OncePerRequestFilter {
         if(securityTokenGenerator.validateToken(token)){
            var uname= securityTokenGenerator.getUserNameFromToken(token);
             UserDetails user=customUserDetailsService.loadUserByUsername(uname);
-            UsernamePasswordAuthenticationToken authToken=new UsernamePasswordAuthenticationToken(user,null);
+            UsernamePasswordAuthenticationToken authToken=new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
 

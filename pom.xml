@@ -79,6 +79,11 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/libs/aws-utility-1.0-SNAPSHOT.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.21.19</version>
+		</dependency>
 	</dependencies>
 
 	<build>

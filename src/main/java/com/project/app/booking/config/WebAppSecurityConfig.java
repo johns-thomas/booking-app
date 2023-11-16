@@ -20,13 +20,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
 public class WebAppSecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {"/api/authenticate/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/user/authenticate/**"};
 
     @Autowired
     private CustomAuthEntryPoint userAuthEntryPoint;
@@ -42,7 +43,7 @@ public class WebAppSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers(WHITE_LIST_URL).permitAll()

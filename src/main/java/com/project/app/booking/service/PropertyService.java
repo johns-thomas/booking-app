@@ -66,12 +66,12 @@ public class PropertyService {
         PropertyEntity propertyEntity=new PropertyEntity();
         propertyEntity.setTitle(property.getTitle());
         propertyEntity.setDescription(property.getDescription());
-        propertyEntity.setArea(property.getArea());
+        propertyEntity.setArea(property.getAddress());
         propertyEntity.setBathrooms(property.getBathrooms());
         propertyEntity.setBedrooms(property.getBedrooms());
         propertyEntity.setPrice(property.getPrice());
         propertyEntity.setType(property.getType());
-        propertyEntity.setLocation(property.getLocation());
+        propertyEntity.setLocation(property.getEircode());
         return propertyRepository.save(propertyEntity).getId();
 
     }

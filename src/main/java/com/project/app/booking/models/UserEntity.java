@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@RequiredArgsConstructor
 @Entity
 @Table(name="users",uniqueConstraints = {
         @UniqueConstraint(
