@@ -1,13 +1,16 @@
 package com.project.app.booking.repository;
 
 import com.project.app.booking.models.PropertyEntity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Transactional
 public interface PropertyRepository extends JpaRepository<PropertyEntity,Integer> {
 
     @Modifying

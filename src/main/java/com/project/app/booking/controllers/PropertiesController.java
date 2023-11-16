@@ -31,10 +31,17 @@ public class PropertiesController {
         return propertyService.getPropertyImage(propertyId);
     }
 
-    @PostMapping("buy")
-    public void buyProperty(@RequestBody BookingDTO bookingDTO, @AuthenticationPrincipal UserDetails user){
-        propertyService.buyProperty(bookingDTO,user);
+    @PostMapping("book_viewing")
+    public ResponseEntity<Object> bookViewing(@RequestBody BookingDTO bookingDTO, @AuthenticationPrincipal UserDetails user){
+        var obj=propertyService.buyProperty(bookingDTO,user);
+            if(obj!=null){
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
     }
+
 
     @PostMapping("rent/{id}")
     public void rentProperty(@RequestPart("property_id") int id,@AuthenticationPrincipal UserDetails user){

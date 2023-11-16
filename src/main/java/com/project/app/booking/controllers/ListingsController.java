@@ -1,15 +1,14 @@
 package com.project.app.booking.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.app.booking.dto.FormDTO;
 import com.project.app.booking.dto.ListingDTO;
+import com.project.app.booking.dto.ListingView;
 import com.project.app.booking.dto.PropertyDTO;
-import com.project.app.booking.models.UserEntity;
+import com.project.app.booking.enums.Status;
 import com.project.app.booking.service.ListingService;
 import com.project.app.booking.service.PropertyService;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,10 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/listings/")
+@RequestMapping("/api/listings")
 public class ListingsController {
 
     @Autowired
@@ -32,28 +32,45 @@ public class ListingsController {
 
 
     @PostMapping(value="create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void createListing(@AuthenticationPrincipal UserDetails user, @RequestParam("json") String json,
-                              @RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<String> createListing(@AuthenticationPrincipal UserDetails user, @RequestParam("json") String json,
+                                                @RequestParam("file") MultipartFile file) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        ListingDTO listing=mapper.readValue(json, ListingDTO.class);
-        long propertyId=propertyService.createProperty(listing.getProperty());
-        listing.getProperty().setId(propertyId);
+        PropertyDTO prop=mapper.readValue(json, PropertyDTO.class);
+        long propertyId=propertyService.createProperty(prop);
+        prop.setId(propertyId);
         propertyService.uploadPropertyImage(propertyId,file);
+        ListingDTO listing=new ListingDTO();
+        listing.setDateListed(new Date());
+        listing.setStatus(Status.AVAILABLE);
+        listing.setProperty(prop);
         listingService.addListing(listing,user);
 
-
+        return new ResponseEntity<String>("Successfully created", HttpStatus.OK);
     }
 
     @GetMapping(value="{id}")
-    public ListingDTO getListingById(@PathVariable long id){
-        return listingService.getListingById(id);
+    public ResponseEntity<ListingView> getListingById(@PathVariable long id){
+        ListingView  listingView=listingService.getListingById(id);
+
+        if (listingView!=null) {
+            return ResponseEntity.ok(listingView);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
 
-    @GetMapping()
-    public List<ListingDTO> getListings(@RequestParam String location, @RequestParam String status){
-        return listingService.getAllListings();
+    @GetMapping("/")
+    public ResponseEntity<List<ListingView>> getListings(@RequestParam("status") Status status){
+
+        List<ListingView> list= listingService.getListings(status);
+        if (!list.isEmpty()) {
+            return ResponseEntity.ok(list);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 

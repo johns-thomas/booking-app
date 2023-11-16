@@ -17,6 +17,7 @@ import java.util.Objects;
 @Table(name="listing")
 public class ListingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_id", nullable = false)
     private Long id;
 

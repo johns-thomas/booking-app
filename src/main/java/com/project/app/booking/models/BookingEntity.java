@@ -14,6 +14,7 @@ import java.util.Date;
 @Table(name="bookings")
 public class BookingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

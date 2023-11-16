@@ -85,7 +85,7 @@ public class PropertyService {
     }
 
 
-    public void buyProperty(BookingDTO bookingDTO, UserDetails user) {
+    public BookingEntity buyProperty(BookingDTO bookingDTO, UserDetails user) {
         UserEntity userEntity=customUserDetailsService.getByUsername(user.getUsername());
         PropertyEntity property=propertyRepository.getPropertyById(bookingDTO.getPropertyId()).orElseThrow(() -> new RuntimeException(
                 "Property not found"
@@ -93,6 +93,7 @@ public class PropertyService {
         BookingEntity booking=new BookingEntity();
         booking.setProperty(property);
         booking.setUser(userEntity);
-        bookingRepository.save(booking);
+        booking.setDateBooked(bookingDTO.getBookingDate());
+        return bookingRepository.save(booking);
     }
 }

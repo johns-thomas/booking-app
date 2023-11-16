@@ -27,7 +27,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 public class WebAppSecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = {"/api/user/authenticate/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/user/authenticate/**","/api/properties/{propertyId}/image"};
 
     @Autowired
     private CustomAuthEntryPoint userAuthEntryPoint;

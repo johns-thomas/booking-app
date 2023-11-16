@@ -18,6 +18,7 @@ import java.util.Set;
 @Table(name="property")
 public class PropertyEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

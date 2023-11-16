@@ -23,8 +23,8 @@ public class SecurityTokenGenerator {
 
     private static final String SECRET ="CPPPROJECT45TSGFBA586SFSFSGRSGSZFD413DFDGH2B4B464647DFHHDB5970";
     public String generateToken(Authentication authentication){
-
-        Date expDate= new Date(new Date().getTime()+700000L);
+        long expirationTimeInMillis = System.currentTimeMillis() + (30 * 60 * 1000);
+        Date expDate= new Date(expirationTimeInMillis);
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
