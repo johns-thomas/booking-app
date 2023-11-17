@@ -33,11 +33,11 @@ public class ListingEntity {
     Date dateListed;
 
     @Column
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private BookingType type;
 
 

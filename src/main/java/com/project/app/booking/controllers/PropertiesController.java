@@ -2,6 +2,7 @@ package com.project.app.booking.controllers;
 
 import com.project.app.booking.dto.BookingDTO;
 import com.project.app.booking.dto.PropertyDTO;
+import com.project.app.booking.service.ListingService;
 import com.project.app.booking.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/properties/")
 public class PropertiesController {
 
+
+
     @Autowired
     private PropertyService propertyService;
+
 
     @GetMapping("{id}")
     public PropertyDTO getPropertyById(@PathVariable int id){

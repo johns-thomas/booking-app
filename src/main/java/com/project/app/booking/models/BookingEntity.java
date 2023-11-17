@@ -18,7 +18,7 @@ public class BookingEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "property_id", referencedColumnName = "id",nullable=false)
     private PropertyEntity property;
 

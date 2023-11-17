@@ -47,11 +47,11 @@ public class PropertyEntity {
     String img;
 
     @Column
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     Type type;
 
-    @OneToOne(mappedBy = "property")
-    private ListingEntity listing;
+    @OneToMany
+    private Set<ListingEntity> listing;
 
     @OneToMany
     private Set<BookingEntity> bookings;

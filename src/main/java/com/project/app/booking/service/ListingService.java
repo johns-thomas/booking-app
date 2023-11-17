@@ -61,4 +61,10 @@ public class ListingService {
     public List<ListingView> getListings(Status status){
         return listingRepository.findByStatus(status).stream().map(listingDtoMapper).collect(Collectors.toList());
     }
+
+    public void updateStatus(long id,Status status){
+        var listing=listingRepository.getListingById(id).get();
+        listing.setStatus(status);
+        listingRepository.save(listing);
+    }
 }

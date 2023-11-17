@@ -2,9 +2,12 @@ package com.project.app.booking.service;
 
 import com.awsutility.S3Utility;
 import com.project.app.booking.dto.BookingDTO;
+import com.project.app.booking.dto.ListingView;
 import com.project.app.booking.dto.PropertyDTO;
 import com.project.app.booking.dto.PropertyDtoMapper;
+import com.project.app.booking.enums.Status;
 import com.project.app.booking.models.BookingEntity;
+import com.project.app.booking.models.ListingEntity;
 import com.project.app.booking.models.PropertyEntity;
 import com.project.app.booking.models.UserEntity;
 import com.project.app.booking.repository.BookingRepository;
@@ -35,6 +38,10 @@ public class PropertyService {
 
     @Autowired
     private PropertyDtoMapper propertyDtoMapper;
+
+    @Autowired
+    private ListingService listingService;
+
 
     @Value("${aws.bucket.name}")
     private String bucketName;
@@ -90,10 +97,19 @@ public class PropertyService {
         PropertyEntity property=propertyRepository.getPropertyById(bookingDTO.getPropertyId()).orElseThrow(() -> new RuntimeException(
                 "Property not found"
         ));
+        ListingView listingView=listingService.getListingById(bookingDTO.getListingId());
+        if(listingView.getStatus().equals(Status.SOLD)){
+            throw new RuntimeException("Not  Available");
+        }
         BookingEntity booking=new BookingEntity();
         booking.setProperty(property);
         booking.setUser(userEntity);
         booking.setDateBooked(bookingDTO.getBookingDate());
-        return bookingRepository.save(booking);
+        var bookingObj= bookingRepository.save(booking);
+        listingService.updateStatus(listingView.getId(),Status.SOLD );
+        return bookingObj;
     }
+
+
+
 }

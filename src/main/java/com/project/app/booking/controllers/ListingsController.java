@@ -65,7 +65,7 @@ public class ListingsController {
     public ResponseEntity<List<ListingView>> getListings(@RequestParam("status") Status status){
 
         List<ListingView> list= listingService.getListings(status);
-        if (!list.isEmpty()) {
+        if (list!=null) {
             return ResponseEntity.ok(list);
         } else {
             return ResponseEntity.notFound().build();
