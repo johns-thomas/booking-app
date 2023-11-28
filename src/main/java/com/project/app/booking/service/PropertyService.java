@@ -1,10 +1,11 @@
 package com.project.app.booking.service;
 
 
-import com.awsutility.s3.S3Utility;
-import com.awsutility.sqs.SQSUtility;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.app.booking.awsutility.s3.S3Utility;
+import com.project.app.booking.awsutility.sqs.SQSUtility;
 import com.project.app.booking.dto.*;
 import com.project.app.booking.enums.Status;
 import com.project.app.booking.models.BookingEntity;

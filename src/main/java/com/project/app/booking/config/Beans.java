@@ -1,9 +1,10 @@
 package com.project.app.booking.config;
 
 
-import com.awsutility.s3.S3Utility;
-import com.awsutility.sns.SnsUtility;
-import com.awsutility.sqs.SQSUtility;
+
+import com.project.app.booking.awsutility.s3.S3Utility;
+import com.project.app.booking.awsutility.sns.SnsUtility;
+import com.project.app.booking.awsutility.sqs.SQSUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 

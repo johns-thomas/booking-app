@@ -1,6 +1,7 @@
 package com.project.app.booking.controllers;
 
-import com.awsutility.sns.SnsUtility;
+
+import com.project.app.booking.awsutility.sns.SnsUtility;
 import com.project.app.booking.config.SecurityTokenGenerator;
 import com.project.app.booking.dto.AuthResDTO;
 import com.project.app.booking.dto.RegisterDTO;

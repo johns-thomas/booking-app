@@ -1,6 +1,7 @@
 package com.project.app.booking.service;
 
-import com.awsutility.sns.SnsUtility;
+
+import com.project.app.booking.awsutility.sns.SnsUtility;
 import com.project.app.booking.dto.ListingDTO;
 import com.project.app.booking.dto.ListingDtoMapper;
 import com.project.app.booking.dto.ListingView;
