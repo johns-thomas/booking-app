@@ -48,6 +48,7 @@ public class AuthenticationController {
             UserEntity user=customUserDetailsService.createUser(registerDTO);
             snsUtility.subEmail(topicARN, user.getEmail());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>("User successfully created", HttpStatus.OK);
