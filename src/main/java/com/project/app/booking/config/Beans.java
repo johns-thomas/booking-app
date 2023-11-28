@@ -1,6 +1,9 @@
 package com.project.app.booking.config;
 
-import com.awsutility.S3Utility;
+
+import com.awsutility.s3.S3Utility;
+import com.awsutility.sns.SnsUtility;
+import com.awsutility.sqs.SQSUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
@@ -37,4 +40,12 @@ public class Beans {
     public S3Utility s3Operations() {
         return S3Utility.build(awsRegion);
     }
+
+    @Bean
+    public SQSUtility sqsUtility(){
+        return SQSUtility.build(awsRegion);
+    }
+
+    @Bean
+    public SnsUtility snsUtility(){return SnsUtility.build(awsRegion);}
 }

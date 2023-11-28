@@ -1,5 +1,6 @@
 package com.project.app.booking.controllers;
 
+import com.awsutility.sns.SnsUtility;
 import com.project.app.booking.config.SecurityTokenGenerator;
 import com.project.app.booking.dto.AuthResDTO;
 import com.project.app.booking.dto.RegisterDTO;
@@ -9,6 +10,7 @@ import com.project.app.booking.models.UserEntity;
 import com.project.app.booking.service.CustomUserDetailsService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,11 +35,17 @@ public class AuthenticationController {
     @Autowired
     private SecurityTokenGenerator securityTokenGenerator;
 
+    @Autowired
+    private SnsUtility snsUtility;
+
+    @Value("${aws.sns.topicARN}")
+    private String topicARN;
+
     @PostMapping("/authenticate/signup")
     public ResponseEntity<String> signUp(@RequestBody RegisterDTO registerDTO){
         try {
-            customUserDetailsService.createUser(registerDTO);
-
+            UserEntity user=customUserDetailsService.createUser(registerDTO);
+            snsUtility.subEmail(topicARN, user.getEmail());
         } catch (Exception e) {
            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

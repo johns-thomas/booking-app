@@ -29,8 +29,6 @@ public class ListingsController {
     @Autowired
     private PropertyService propertyService;
 
-
-
     @PostMapping(value="create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createListing(@AuthenticationPrincipal UserDetails user, @RequestParam("json") String json,
                                                 @RequestParam("file") MultipartFile file) throws Exception {

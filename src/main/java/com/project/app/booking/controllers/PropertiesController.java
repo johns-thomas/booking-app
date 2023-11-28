@@ -1,8 +1,8 @@
 package com.project.app.booking.controllers;
 
 import com.project.app.booking.dto.BookingDTO;
+import com.project.app.booking.dto.BookingView;
 import com.project.app.booking.dto.PropertyDTO;
-import com.project.app.booking.service.ListingService;
 import com.project.app.booking.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/properties/")
@@ -45,10 +47,13 @@ public class PropertiesController {
             }
 
     }
-
-
-    @PostMapping("rent/{id}")
-    public void rentProperty(@RequestPart("property_id") int id,@AuthenticationPrincipal UserDetails user){
-
+    @GetMapping("view_bookings")
+    public ResponseEntity<List<BookingView>> getBookings(@AuthenticationPrincipal UserDetails user){
+       var list= propertyService.getUserBookings(user);
+        if (list!=null) {
+            return ResponseEntity.ok(list);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

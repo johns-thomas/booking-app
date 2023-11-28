@@ -1,13 +1,13 @@
 package com.project.app.booking.service;
 
-import com.awsutility.S3Utility;
-import com.project.app.booking.dto.BookingDTO;
-import com.project.app.booking.dto.ListingView;
-import com.project.app.booking.dto.PropertyDTO;
-import com.project.app.booking.dto.PropertyDtoMapper;
+
+import com.awsutility.s3.S3Utility;
+import com.awsutility.sqs.SQSUtility;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.app.booking.dto.*;
 import com.project.app.booking.enums.Status;
 import com.project.app.booking.models.BookingEntity;
-import com.project.app.booking.models.ListingEntity;
 import com.project.app.booking.models.PropertyEntity;
 import com.project.app.booking.models.UserEntity;
 import com.project.app.booking.repository.BookingRepository;
@@ -19,7 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -40,11 +43,22 @@ public class PropertyService {
     private PropertyDtoMapper propertyDtoMapper;
 
     @Autowired
+    private BookingDTOMapper bookingDTOMapper;
+
+    @Autowired
     private ListingService listingService;
 
+    @Autowired
+    private SQSUtility sqsUtility;
 
     @Value("${aws.bucket.name}")
     private String bucketName;
+
+    @Value("${aws.queue.booking.name}")
+    private String queueName;
+
+    @Value("${aws.queue.booking.url}")
+    private String queueUrl;
 
     public byte[] getPropertyImage(Long propertyId) {
         PropertyDTO property = getPropertyById(propertyId);
@@ -104,10 +118,42 @@ public class PropertyService {
         BookingEntity booking=new BookingEntity();
         booking.setProperty(property);
         booking.setUser(userEntity);
+
         booking.setDateBooked(bookingDTO.getBookingDate());
         var bookingObj= bookingRepository.save(booking);
         listingService.updateStatus(listingView.getId(),Status.SOLD );
+        createNotifyEvent(createNotifyMessage(bookingObj,listingView));
         return bookingObj;
+    }
+
+    private void createNotifyEvent(String message){
+        sqsUtility.enqueueMessage(message,queueUrl);
+    }
+
+    private String createNotifyMessage(BookingEntity bookingEntity,ListingView listingView) {
+        BookingMessage message=new BookingMessage();
+        message.setBuyerName(bookingEntity.getUser().getFname()+' '+bookingEntity.getUser().getLname());
+        message.setBuyerEmail(bookingEntity.getUser().getEmail());
+
+        message.setSellerName(listingView.getOwnerName());
+        message.setSellerEmail(listingView.getOwnerEmail());
+        message.setProperty(Optional.of(bookingEntity.getProperty()).map(propertyDtoMapper).get());
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = dateFormat.format(bookingEntity.getDateBooked());
+        message.setBookingDate(strDate);
+        ObjectMapper mapper= new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public List<BookingView> getUserBookings(UserDetails user){
+        UserEntity userEntity=customUserDetailsService.getByUsername(user.getUsername());
+          return   bookingRepository.findByUser(userEntity).stream().map(bookingDTOMapper).collect(Collectors.toList());
     }
 
 
