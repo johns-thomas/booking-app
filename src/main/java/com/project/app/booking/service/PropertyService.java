@@ -63,11 +63,11 @@ public class PropertyService {
 
     public byte[] getPropertyImage(Long propertyId) {
         PropertyDTO property = getPropertyById(propertyId);
-        byte[] img = s3Utility.getObject(
+        return s3Utility.getObject(
                 bucketName,
-                "propertyImages/%s/%s".formatted(propertyId, property.getImg())
+                "propertyImages/%s/%s".formatted(propertyId,
+                        property.getImg())
         );
-        return img;
     }
 
     public void uploadPropertyImage(long propertyId, MultipartFile file) {
@@ -75,7 +75,8 @@ public class PropertyService {
         try {
             s3Utility.uploadObject(
                     bucketName,
-                    "propertyImages/%s/%s".formatted(propertyId, propertyImageId),
+                    "propertyImages/%s/%s".formatted(propertyId,
+                            propertyImageId),
                     file.getBytes()
             );
         }  catch (IOException e) {

@@ -37,7 +37,7 @@ public class SnsUtility {
         }
     }
 
-    public SubscribeResponse subEmail(String topicArn, String email) {
+    public SubscribeResponse subscribeToEmailNotification(String topicArn, String email) {
 
         try {
             SubscribeRequest request = SubscribeRequest.builder()
@@ -53,8 +53,6 @@ public class SnsUtility {
             throw new RuntimeException(e.awsErrorDetails().errorMessage());
         }
     }
-
-
 
 
 
