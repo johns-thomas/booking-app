@@ -9,5 +9,5 @@ phases:
       - echo Build complete.
 artifacts:
   files:
-    - target/booking_app
+    - target/booking_app.jar
   discard-paths: yes
