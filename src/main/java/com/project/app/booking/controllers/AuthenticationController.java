@@ -63,7 +63,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/")
-    public UserDTO getLoggedInUser(@AuthenticationPrincipal UserDetails user){
+    public ResponseEntity<UserDTO> getLoggedInUser(@AuthenticationPrincipal UserDetails user){
         UserEntity userEntity=customUserDetailsService.getByUsername(user.getUsername());
         UserDTO userDTO=new UserDTO();
         userDTO.setUsername(userEntity.getUsername());
@@ -72,6 +72,6 @@ public class AuthenticationController {
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setBookings(userEntity.getBookings());
         userDTO.setListings(userEntity.getListings());
-        return userDTO;
+        return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
     }
 }
