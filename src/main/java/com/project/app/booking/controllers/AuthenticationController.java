@@ -36,17 +36,17 @@ public class AuthenticationController {
     @Autowired
     private SecurityTokenGenerator securityTokenGenerator;
 
-    @Autowired
-    private SnsUtility snsUtility;
-
-    @Value("${aws.sns.topicARN}")
-    private String topicARN;
+//    @Autowired
+//    private SnsUtility snsUtility;
+//
+//    @Value("${aws.sns.topicARN}")
+//    private String topicARN;
 
     @PostMapping("/authenticate/signup")
     public ResponseEntity<String> signUp(@RequestBody RegisterDTO registerDTO){
         try {
             UserEntity user=customUserDetailsService.createUser(registerDTO);
-            snsUtility.subscribeToEmailNotification(topicARN, user.getEmail());
+            //snsUtility.subscribeToEmailNotification(topicARN, user.getEmail());
         } catch (Exception e) {
            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -70,8 +70,8 @@ public class AuthenticationController {
         userDTO.setFname(userEntity.getFname());
         userDTO.setLname(userEntity.getLname());
         userDTO.setEmail(userEntity.getEmail());
-        userDTO.setBookings(userEntity.getBookings());
-        userDTO.setListings(userEntity.getListings());
+//        userDTO.setBookings(userEntity.getBookings());
+//        userDTO.setListings(userEntity.getListings());
         return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
     }
 }

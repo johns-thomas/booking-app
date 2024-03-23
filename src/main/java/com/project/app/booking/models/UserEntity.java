@@ -39,11 +39,11 @@ public class UserEntity {
     @Column( nullable = false)
     private String password;
 
-    @OneToMany
-    private Set<ListingEntity> listings;
-
-    @OneToMany
-    private Set<BookingEntity> bookings;
+//    @OneToMany
+//    private Set<ListingEntity> listings;
+//
+//    @OneToMany
+//    private Set<BookingEntity> bookings;
 
     @Override
     public boolean equals(Object o) {

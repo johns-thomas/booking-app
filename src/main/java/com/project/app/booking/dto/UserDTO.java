@@ -20,6 +20,6 @@ public class UserDTO {
     private String fname;
     private String lname;
     private String email;
-    private Set<ListingEntity> listings;
-    private Set<BookingEntity> bookings;
+//    private Set<ListingEntity> listings;
+//    private Set<BookingEntity> bookings;
 }
