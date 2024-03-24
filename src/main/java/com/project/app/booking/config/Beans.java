@@ -2,6 +2,7 @@ package com.project.app.booking.config;
 
 
 
+import com.project.app.booking.awsutility.dynamodb.DynamoDBUtility;
 import com.project.app.booking.awsutility.s3.S3Utility;
 import com.project.app.booking.awsutility.sns.SnsUtility;
 import com.project.app.booking.awsutility.sqs.SQSUtility;
@@ -49,4 +50,6 @@ public class Beans {
 
     @Bean
     public SnsUtility snsUtility(){return SnsUtility.build(awsRegion);}
+
+    public DynamoDBUtility dynamoDBUtility(){return DynamoDBUtility.build(awsRegion);}
 }
