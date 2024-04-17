@@ -50,6 +50,6 @@ public class Beans {
 
     @Bean
     public SnsUtility snsUtility(){return SnsUtility.build(awsRegion);}
-
+    @Bean
     public DynamoDBUtility dynamoDBUtility(){return DynamoDBUtility.build(awsRegion);}
 }

@@ -62,7 +62,7 @@ public class WebAppSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://x22203389travelogueapp.com.s3-website.ap-south-1.amazonaws.com/"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList(("*")));
         configuration.setAllowCredentials(true);

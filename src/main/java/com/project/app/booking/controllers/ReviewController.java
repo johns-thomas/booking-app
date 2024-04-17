@@ -4,6 +4,9 @@ package com.project.app.booking.controllers;
 import com.project.app.booking.awsutility.dynamodb.DynamoDBUtility;
 import com.project.app.booking.dto.ReviewDTO;
 import com.project.app.booking.dto.ReviewItem;
+import com.project.app.booking.models.UserEntity;
+import com.project.app.booking.service.CustomUserDetailsService;
+import com.project.app.booking.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +19,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/review")
+@RequestMapping("api/city/review")
 public class ReviewController {
 
     @Autowired
     private DynamoDBUtility dbUtility;
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private NotificationService notificationService;
     @PostMapping("/add")
     public ResponseEntity<String> addReview(@RequestBody ReviewDTO reviewDTO, @AuthenticationPrincipal UserDetails user){
         ReviewItem item=new ReviewItem();
@@ -30,7 +37,11 @@ public class ReviewController {
         item.setTitle(reviewDTO.getTitle());
         item.setRating(reviewDTO.getRating());
         item.setLocation(reviewDTO.getLocation());
+
         String res=dbUtility.putRecord(item);
+        UserEntity u=customUserDetailsService.getByUsername(user.getUsername());
+        reviewDTO.setId(res);
+        notificationService.createNotifyEvent(reviewDTO,u);
         if(res!=null){
            return new ResponseEntity<String>("Successfully created", HttpStatus.OK);
         }

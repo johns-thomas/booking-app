@@ -14,4 +14,6 @@ public class ReviewDTO {
 
     private int rating;
     private String location;
+    private String city;
+    private String id;
 }

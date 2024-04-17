@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class PropertyService {
 
     @Autowired

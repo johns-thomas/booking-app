@@ -157,4 +157,7 @@ public class SQSUtility {
             }
     }
 
+    public void addNotificationEvent(String json){
+
+    }
 }

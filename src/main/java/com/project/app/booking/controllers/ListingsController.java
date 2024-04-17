@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/listings")
+//@RestController
+//@RequestMapping("/api/listings")
 public class ListingsController {
 
     @Autowired
